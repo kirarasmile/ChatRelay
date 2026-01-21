@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "ChatRelay",
+  "version": "1.0.0",
+  "description": "解决AI聊天对话导出与上下文继承的终极方案",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://aistudio.google.com/*",
+    "https://chat.deepseek.com/*"
+  ],
+  "action": {
+    "default_popup": "src/popup/index.html"
+  },
+  "options_page": "src/options/index.html",
+  "background": {
+    "service_worker": "src/background/index.ts",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://aistudio.google.com/*",
+        "https://chat.deepseek.com/*"
+      ],
+      "js": ["src/content/index.ts"]
+    }
+  ]
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatRelay 设置</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --text: #1f2937;
+      --text-light: #6b7280;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-bottom: 24px;
+    }
+    h1 { font-size: 24px; margin-bottom: 24px; color: var(--text); }
+    h2 {
+      margin-top: 0;
+      font-size: 18px;
+      color: var(--text);
+      border-bottom: 2px solid var(--bg);
+      padding-bottom: 8px;
+      margin-bottom: 20px;
+    }
+    .field { margin-bottom: 16px; }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    input[type="text"], input[type="password"], input[type="number"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    .hint { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+    .toggle-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--bg);
+    }
+    .toggle-field:last-child { border-bottom: none; }
+    .toggle-label { display: flex; flex-direction: column; }
+    .toggle-label span { font-size: 14px; font-weight: 500; }
+    .toggle-label small { font-size: 12px; color: var(--text-light); }
+    .toggle-switch { position: relative; width: 48px; height: 26px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc; transition: 0.3s; border-radius: 26px;
+    }
+    .toggle-slider:before {
+      position: absolute; content: ""; height: 20px; width: 20px;
+      left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%;
+    }
+    .toggle-switch input:checked + .toggle-slider { background-color: var(--primary); }
+    .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
+    .save-btn {
+      width: 100%; padding: 12px; background-color: var(--primary); color: white;
+      border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 600;
+      transition: background-color 0.2s;
+    }
+    .save-btn:hover { background-color: var(--primary-hover); }
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .provider-btn {
+      padding: 12px 8px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      font-size: 13px;
+    }
+    .provider-btn:hover { border-color: var(--primary); background: #f5f3ff; }
+    .provider-btn.active { border-color: var(--primary); background: #ede9fe; }
+    .provider-btn .icon { font-size: 20px; margin-bottom: 4px; }
+    .model-suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .model-tag {
+      padding: 4px 10px;
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .model-tag:hover { background: #ede9fe; border-color: var(--primary); }
+  </style>
+</head>
+<body>
+  <h1>ChatRelay 设置</h1>
+  
+  <div class="card">
+    <h2>LLM API 配置</h2>
+    
+    <div class="toggle-field">
+      <div class="toggle-label">
+        <span>启用自动 API 总结</span>
+        <small>配置 API 后，点击"生成上下文摘要"将自动调用 API</small>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="autoSummary">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <label style="margin-top: 16px; margin-bottom: 8px;">选择 API 提供商</label>
+    <div class="provider-grid">
+      <button type="button" class="provider-btn" data-provider="openai">
+        <div class="icon">🤖</div>
+        <div>OpenAI</div>
+      </button>
+      <button type="button" class="provider-btn" data-provider="anthropic">
+        <div class="icon">🧠</div>
+        <div>Anthropic</div>
+      </button>
+      <button type="button" class="provider-btn" data-provider="deepseek">
+        <div class="icon">🔍</div>
+        <div>DeepSeek</div>
+      </button>
+      <button type="button" class="provider-btn" data-provider="google">
+        <div class="icon">✨</div>
+        <div>Google</div>
+      </button>
+      <button type="button" class="provider-btn" data-provider="openrouter">
+        <div class="icon">🌐</div>
+        <div>OpenRouter</div>
+      </button>
+      <button type="button" class="provider-btn" data-provider="custom">
+        <div class="icon">⚙️</div>
+        <div>自定义</div>
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="apiUrl">API Base URL</label>
+      <input type="text" id="apiUrl" placeholder="https://api.openai.com/v1">
+      <p class="hint">支持 OpenAI 兼容格式的 API 地址</p>
+    </div>
+    
+    <div class="field">
+      <label for="apiKey">API Key</label>
+      <input type="password" id="apiKey" placeholder="sk-...">
+    </div>
+    
+    <div class="field">
+      <label for="model">模型名称</label>
+      <input type="text" id="model" placeholder="gpt-4o-mini">
+      <div class="model-suggestions" id="modelSuggestions"></div>
+    </div>
+
+    <div class="field">
+      <label for="maxTokens">最大输入 Token 数（用于截断）</label>
+      <input type="number" id="maxTokens" placeholder="30000" value="30000">
+      <p class="hint">超过此长度的对话将被智能截断，建议设置为模型上下文窗口的 1/3</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>偏好设置</h2>
+    <div class="field">
+      <label for="defaultFormat">默认导出格式</label>
+      <select id="defaultFormat">
+        <option value="markdown">Markdown (.md)</option>
+        <option value="json">JSON (.json)</option>
+        <option value="text">纯文本 (.txt)</option>
+        <option value="html">HTML (.html)</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="save-btn" id="saveBtn">保存所有设置</button>
+
+  <script type="module" src="./options.ts"></script>
+</body>
+</html>
